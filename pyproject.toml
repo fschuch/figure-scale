@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "wizard-template"
+name = "figure-scale"
 version = "0.0.0" # no need to change, it is updated by poetry-version-plugin at build time
 description = "A template for a python project containing a library, tests, docs, and CI/CD."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/fschuch/wizard-template"
+repository = "https://github.com/fschuch/figure-scale"
 authors = ["Felipe N. Schuch <me@fschuch.com>"]
-packages = [{ include = "wizard_template" }]
+packages = [{ include = "figure_scale" }]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -20,9 +20,9 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/fschuch/wizard-template/issues"
-"Changelog" = "https://github.com/fschuch/wizard-template/releases"
-"Documentation" = "https://fschuch.github.io/wizard-template/"
+"Bug Tracker" = "https://github.com/fschuch/figure-scale/issues"
+"Changelog" = "https://github.com/fschuch/figure-scale/releases"
+"Documentation" = "https://fschuch.github.io/figure-scale/"
 
 [tool.poetry.dependencies]
 python = "^3.8.10"
@@ -30,7 +30,6 @@ python = "^3.8.10"
 [tool.poetry.group.dev.dependencies]
 black = { extras = ["jupyter"], version = "^23.7.0" }
 codespell = "^2.2.5"
-gitpython = "^3.1.32"
 mypy = "^1.5.1"
 pre-commit = "^3.3.3"
 pytest = "^7.4.0"
@@ -56,7 +55,7 @@ minversion = "7.0"
 addopts = [
     "-s",
     "--random-order",
-    "--cov=wizard_template",
+    "--cov=figure_scale",
     "--doctest-modules",
     "--doctest-glob='*.md'",
     "--doctest-continue-on-failure",
@@ -65,7 +64,7 @@ addopts = [
 
 [tool.coverage.run]
 parallel = true
-source = ["docs", "tests", "wizard_template"]
+source = ["docs", "tests", "figure_scale"]
 
 [tool.coverage.report]
 fail_under = 90
@@ -108,9 +107,9 @@ docs_update_config = "jupyter-book config sphinx docs"
 pre_docs = "poetry install --with docs"
 docs = "jupyter-book build docs --path-output build"
 pre_docs_serve = "task pre_docs"
-docs_serve = "sphinx-autobuild docs build/_build/html --open-browser --watch wizard_template"
-wizard = "python ./scripts/rename_project_content.py"
-post_wizard = "poetry remove gitpython"
+docs_serve = "sphinx-autobuild docs build/_build/html --open-browser --watch figure_scale"
+
+
 
 [tool.poetry-version-plugin]
 source = "git-tag"

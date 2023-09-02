@@ -1,4 +1,4 @@
-"""Version information for the wizard_template package.
+"""Version information for the figure_scale package.
 
 References
 ----------
