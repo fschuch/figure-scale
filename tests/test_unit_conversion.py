@@ -35,6 +35,13 @@ def test_update_conversion_table__success():
     assert CONVERSION_TABLE["test"] == 1.0
 
 
+def test_update_conversion_table__negative_value():
+    """Test that the conversion table is correct."""
+    with pytest.raises(TypeError):
+        update_conversion_table(test=-1.0)
+    assert "test" not in CONVERSION_TABLE
+
+
 def test_update_conversion_table__key_not_string():
     """Test that the conversion table is correct."""
     with pytest.raises(TypeError):
