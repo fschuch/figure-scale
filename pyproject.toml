@@ -59,6 +59,7 @@ addopts = [
     "-s",
     "--random-order",
     "--cov=figure_scale",
+    "--cov-report=xml",
     "--doctest-modules",
     "--doctest-glob='*.md'",
     "--doctest-continue-on-failure",
