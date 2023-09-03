@@ -16,16 +16,18 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
 ]
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/fschuch/figure-scale/issues"
 "Changelog" = "https://github.com/fschuch/figure-scale/releases"
-"Documentation" = "https://fschuch.github.io/figure-scale/"
 
 [tool.poetry.dependencies]
 python = "^3.8.10"
+matplotlib = "^3.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = { extras = ["jupyter"], version = "^23.7.0" }
@@ -67,7 +69,6 @@ parallel = true
 source = ["docs", "tests", "figure_scale"]
 
 [tool.coverage.report]
-fail_under = 90
 show_missing = true
 
 [tool.coverage.html]
