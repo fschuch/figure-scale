@@ -17,6 +17,8 @@ def update_conversion_table(**kwargs):
     """Update the conversion table with new values."""
     if any(not isinstance(value, float) for value in kwargs.values()):
         raise TypeError("All values must be floats.")
+    if any(not isinstance(key, str) for key in kwargs):
+        raise TypeError("All keys must be strings.")
     if any(key in CONVERSION_TABLE for key in kwargs):
         raise ValueError("Cannot overwrite existing keys.")
     CONVERSION_TABLE.update(kwargs)
