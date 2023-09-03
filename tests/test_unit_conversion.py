@@ -31,13 +31,16 @@ def test_convert_unit__point_typography():
 def test_update_conversion_table__success():
     """Test that the conversion table is correct."""
     assert "test" not in CONVERSION_TABLE
-    update_conversion_table(test=1.0)
-    assert CONVERSION_TABLE["test"] == 1.0
+    try:
+        update_conversion_table(test=1.0)
+        assert CONVERSION_TABLE["test"] == 1.0
+    finally:
+        CONVERSION_TABLE.pop("test", None)
 
 
 def test_update_conversion_table__negative_value():
     """Test that the conversion table is correct."""
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         update_conversion_table(test=-1.0)
     assert "test" not in CONVERSION_TABLE
 
