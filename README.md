@@ -21,7 +21,7 @@
 ```python
 import matplotlib.pyplot as plt
 import figure_scale as fs
-figsize = fs.get_figsize(4.0, 2.0, units="in")
+figsize = fs.FigureScale(4.0, 2.0, units="in")
 ```
 
 ```python

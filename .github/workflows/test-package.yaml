@@ -53,3 +53,4 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           env_vars: RUNNER_OS,PYTHON_VERSION
+          file: ./coverage.xml
