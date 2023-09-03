@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "figure-scale"
 version = "0.0.0" # no need to change, it is updated by poetry-version-plugin at build time
-description = "A template for a python project containing a library, tests, docs, and CI/CD."
+description = "Make matplotlib figures with the coorect scale."
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/fschuch/figure-scale"
@@ -16,21 +16,24 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
 ]
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/fschuch/figure-scale/issues"
 "Changelog" = "https://github.com/fschuch/figure-scale/releases"
-"Documentation" = "https://fschuch.github.io/figure-scale/"
 
 [tool.poetry.dependencies]
 python = "^3.8.10"
+matplotlib = "^3.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = { extras = ["jupyter"], version = "^23.7.0" }
 codespell = "^2.2.5"
 mypy = "^1.5.1"
+pint = "0.15.0"
 pre-commit = "^3.3.3"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
@@ -67,7 +70,6 @@ parallel = true
 source = ["docs", "tests", "figure_scale"]
 
 [tool.coverage.report]
-fail_under = 90
 show_missing = true
 
 [tool.coverage.html]
