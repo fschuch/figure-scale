@@ -1,7 +1,7 @@
 # Scale your matplotlib figures
 
 <p align="center">
-<a href="https://github.com/fschuch/figure-scale"><img src="docs/logo.png" alt=Wizard template logo" width="320"></a>
+<a href="https://github.com/fschuch/figure-scale"><img src="https://raw.githubusercontent.com/fschuch/figure-scale/main/docs/logo.png" alt="Logo" width="320"></a>
 </p>
 <p align="center">
     <em>Publication quality figures start here</em>
@@ -16,21 +16,35 @@
 [![codecov](https://codecov.io/gh/fschuch/figure-scale/graph/badge.svg?token=K9336AFQD5)](https://codecov.io/gh/fschuch/figure-scale)
 [![CodeFactor](https://www.codefactor.io/repository/github/fschuch/figure-scale/badge)](https://www.codefactor.io/repository/github/fschuch/figure-scale)
 
+## Installation
+
+```bash
+pip install figure-scale
+```
+
 ## Usage
+
+You can set `FigureScale` and use it on any place where matplotlib expects `figsize`.
 
 ```python
 import matplotlib.pyplot as plt
-import figure_scale as fs
-figsize = fs.FigureScale(4.0, 2.0, units="in")
+from figure_scale import FigureScale
+figsize = FigureScale(16.0, 9.0, units="cm")
 ```
+
+It can be per figure:
+
+```python
+fig, ax = plt.subplots(figsize=figsize)
+```
+
+Or you can set it globally:
 
 ```python
 plt.rcParams.update({'figure.figsize' : figsize})
 ```
 
-```python
-fig, ax = plt.subplots(figsize=figsize)
-```
+As syntax sugar, you can use the `figsize` context manager or decorator to change the figure size locally:
 
 ```python
 with figsize():
@@ -41,12 +55,6 @@ with figsize():
 @figsize()
 def my_plot():
     ...
-```
-
-## Installation
-
-```bash
-pip install figure-scale
 ```
 
 ## How to Contribute
