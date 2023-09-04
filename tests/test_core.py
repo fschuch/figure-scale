@@ -8,9 +8,9 @@ from figure_scale.core import FigSize, FigureScale
 def test_fig_size_on_figure():
     """Test that the figure scale works on a figure."""
     figsize = FigSize(1.0, 1.0)
-    ax, _ = plt.subplots(figsize=figsize)
+    fig, _ = plt.subplots(figsize=figsize)
     expected_size = (1.0, 1.0)
-    actual_size = tuple(ax.get_size_inches())
+    actual_size = tuple(fig.get_size_inches())
     assert actual_size == expected_size
 
 
@@ -18,9 +18,9 @@ def test_fig_size_on_config():
     """Test that the figure scale works on a figure."""
     figsize = FigSize(1.0, 1.0)
     with plt.rc_context({"figure.figsize": figsize}):
-        ax, _ = plt.subplots()
+        fig, _ = plt.subplots()
         expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
+        actual_size = tuple(fig.get_size_inches())
         assert actual_size == expected_size
 
 
@@ -73,37 +73,37 @@ class TestFigureScale:
     def test_fig_size__on_figure(self):
         """Test that the figure size is iterable."""
         fig_scale = FigureScale(1.0, 1.0)
-        ax, _ = plt.subplots(figsize=fig_scale)
+        fig, _ = plt.subplots(figsize=fig_scale)
         expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
+        actual_size = tuple(fig.get_size_inches())
         assert actual_size == expected_size
 
     def test_fig_size__on_config(self):
         """Test that the figure size is iterable."""
         fig_scale = FigureScale(1.0, 1.0)
         with plt.rc_context({"figure.figsize": fig_scale}):
-            ax, _ = plt.subplots()
+            fig, _ = plt.subplots()
             expected_size = (1.0, 1.0)
-            actual_size = tuple(ax.get_size_inches())
+            actual_size = tuple(fig.get_size_inches())
             assert actual_size == expected_size
 
     def test_fig_size__on_context(self):
         """Test that the figure size is iterable."""
         with self.fig_scale():
-            ax, _ = plt.subplots()
+            fig, _ = plt.subplots()
             expected_size = (1.0, 1.0)
-            actual_size = tuple(ax.get_size_inches())
+            actual_size = tuple(fig.get_size_inches())
             assert actual_size == expected_size
 
     def test_fig_size__on_decorator(self):
         """Test that the figure size is iterable."""
 
         @self.fig_scale()
-        def plot():
-            ax, _ = plt.subplots()
-            return ax
+        def my_fig():
+            fig, _ = plt.subplots()
+            return fig
 
-        ax = plot()
+        fig = my_fig()
         expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
+        actual_size = tuple(fig.get_size_inches())
         assert actual_size == expected_size
