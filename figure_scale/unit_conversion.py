@@ -1,7 +1,7 @@
 """Hold the table of conversion factors from other units to inches."""
 from __future__ import annotations
 
-CONVERSION_TABLE: dict[str, float] = {
+conversion_table: dict[str, float] = {
     "in": 1,
     "ft": 12,
     "yd": 36,
@@ -13,7 +13,7 @@ CONVERSION_TABLE: dict[str, float] = {
 """Conversion factors from other units to inches."""
 
 
-def update_conversion_table(**kwargs):
+def update_conversion_table(**kwargs: float) -> None:
     """Update the conversion table with new values."""
     if any(not isinstance(value, float) for value in kwargs.values()):
         raise TypeError("All values must be floats.")
@@ -21,6 +21,6 @@ def update_conversion_table(**kwargs):
         raise ValueError("All values must be positive non-zero numbers.")
     if any(not isinstance(key, str) for key in kwargs):
         raise TypeError("All keys must be strings.")
-    if any(key in CONVERSION_TABLE for key in kwargs):
+    if any(key in conversion_table for key in kwargs):
         raise ValueError("Cannot overwrite existing keys.")
-    CONVERSION_TABLE.update(kwargs)
+    conversion_table.update(kwargs)
