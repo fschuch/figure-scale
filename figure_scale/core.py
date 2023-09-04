@@ -30,14 +30,14 @@ class FigureScale(Sequence):
     width: float
     height_abs: float | None = None
     height_rel: float = GOLDEN_RATIO
-    units: str = "in"
+    unit: str = "in"
 
     def __post_init__(self):
         """Validate the values."""
-        if self.units not in conversion_table:
+        if self.unit not in conversion_table:
             raise ValueError(
                 "Unknown unit: {}. The available options are: {}".format(
-                    self.units, ", ".join(conversion_table.keys())
+                    self.unit, ", ".join(conversion_table.keys())
                 )
             )
 
@@ -68,8 +68,8 @@ class FigureScale(Sequence):
             height_abs = self.height_abs
 
         try:
-            factor = conversion_table[self.units]
+            factor = conversion_table[self.unit]
         except KeyError as err:
-            raise ValueError(f"Unknown unit: {self.units}. ") from err
+            raise ValueError(f"Unknown unit: {self.unit}. ") from err
 
         return FigSize(self.width * factor, height_abs * factor)

@@ -61,11 +61,11 @@ class TestFigureScale:
     def test_fig_size__invalid_units(self):
         """Test value error is raised for an unknown unit."""
         with pytest.raises(ValueError):
-            FigureScale(1.0, 1.0, units="invalid")
+            FigureScale(1.0, 1.0, unit="invalid")
 
     def test_fig_size__units_conversion(self):
         """Test that the figure size is iterable."""
-        fig_scale = FigureScale(1.0, 1.0, units="ft")
+        fig_scale = FigureScale(1.0, 1.0, unit="ft")
         expected_size = (12, 12)
         actual_size = tuple(fig_scale)
         assert actual_size == expected_size

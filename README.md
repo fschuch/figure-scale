@@ -29,7 +29,7 @@ You can set `FigureScale` and use it on any place where matplotlib expects `figs
 ```python
 import matplotlib.pyplot as plt
 from figure_scale import FigureScale
-figsize = FigureScale(16.0, 9.0, units="cm")
+figsize = FigureScale(16.0, 9.0, unit="cm")
 ```
 
 It can be per figure:
