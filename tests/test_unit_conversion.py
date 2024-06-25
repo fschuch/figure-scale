@@ -1,4 +1,5 @@
 """Test the unit conversion table."""
+
 import pint
 import pytest
 

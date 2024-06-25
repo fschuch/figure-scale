@@ -1,4 +1,5 @@
 """Hold the table of conversion factors from other units to inches."""
+
 from __future__ import annotations
 
 CONVERSION_TABLE: dict[str, float] = {
@@ -10,7 +11,6 @@ CONVERSION_TABLE: dict[str, float] = {
     "mm": 25.4**-1.0,
     "pt": 72.0**-1.0,
 }
-"""Conversion factors from other units to inches."""
 
 
 def update_conversion_table(**kwargs):
