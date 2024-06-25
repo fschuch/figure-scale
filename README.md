@@ -38,13 +38,14 @@ It can be per figure:
 fig, ax = plt.subplots(figsize=figsize)
 ```
 
-Or you can set it globally:
+Or you can set it globally as the default figure size:
 
 ```python
 plt.rcParams.update({'figure.figsize' : figsize})
 ```
 
-As syntax sugar, you can use the `figsize` context manager or decorator to change the figure size locally:
+As syntax sugar, you can use the `figsize` as a context manager or decorator to
+change the figure size locally:
 
 ```python
 with figsize():
