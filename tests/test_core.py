@@ -1,4 +1,5 @@
 """Test the core module."""
+
 import matplotlib.pyplot as plt
 import pytest
 

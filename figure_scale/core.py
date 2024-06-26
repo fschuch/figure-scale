@@ -1,4 +1,5 @@
 """Module containing the core functionality of the project."""
+
 from __future__ import annotations
 
 import functools
@@ -20,7 +21,6 @@ class FigSize(NamedTuple):
 
 
 GOLDEN_RATIO = (5.0**0.5 - 1.0) / 2.0
-"""The golden ratio."""
 
 
 @dataclass(frozen=True)
