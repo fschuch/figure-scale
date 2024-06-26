@@ -87,7 +87,7 @@ jobs:
   release:
     needs: build
     # upload to PyPI on every tag and ensure it does not run on forks
-    if: github.event_name == 'push' && github.ref_type == 'tag' && github.repository == 'fschuch/figure_scale'
+    if: github.event_name == 'push' && github.ref_type == 'tag' && github.repository == 'fschuch/figure-scale'
     runs-on: ubuntu-latest
     environment:
       name: pypi

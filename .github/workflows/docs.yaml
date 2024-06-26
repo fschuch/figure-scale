@@ -41,7 +41,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event_name == 'push' && github.ref_type == 'tag' && github.repository == 'fschuch/figure_scale'
+    if: github.event_name == 'push' && github.ref_type == 'tag' && github.repository == 'fschuch/figure-scale'
     runs-on: ubuntu-latest
     permissions:
       contents: write
