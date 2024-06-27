@@ -1,110 +1,175 @@
 """Test the core module."""
 
+from contextlib import contextmanager
+from fractions import Fraction
+from unittest.mock import patch
+
 import matplotlib.pyplot as plt
 import pytest
 
 from figure_scale.core import FigSize, FigureScale
+from figure_scale.unit_conversion import INITIAL_VALUES
 
 
-def test_fig_size_on_figure():
-    """Test that the figure scale works on a figure."""
-    figsize = FigSize(1.0, 1.0)
-    ax, _ = plt.subplots(figsize=figsize)
-    expected_size = (1.0, 1.0)
-    actual_size = tuple(ax.get_size_inches())
-    assert actual_size == expected_size
+@contextmanager
+def close_figure(fig):
+    """Ensure figure is closed after use."""
+    try:
+        yield
+    finally:
+        plt.close(fig)
 
 
-def test_fig_size_on_config():
-    """Test that the figure scale works on a figure."""
-    figsize = FigSize(1.0, 1.0)
-    with plt.rc_context({"figure.figsize": figsize}):
-        ax, _ = plt.subplots()
-        expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
-        assert actual_size == expected_size
+class TestFigSize:
+    figsize = FigSize(10.0, 10.0)
+
+    def test_fig_size_on_figure(self):
+        """Test that the figure scale works on a figure."""
+        fig, _ = plt.subplots(figsize=self.figsize)
+        with close_figure(fig):
+            actual_size = tuple(fig.get_size_inches())
+            assert actual_size == self.figsize
+
+    def test_fig_size_on_config(self):
+        """Test that the figure scale works on a figure."""
+        with plt.rc_context({"figure.figsize": self.figsize}):
+            fig, _ = plt.subplots()
+            with close_figure(fig):
+                actual_size = tuple(fig.get_size_inches())
+                assert actual_size == self.figsize
+
+    @pytest.mark.parametrize("scale", [0.5, 2.0, 1, Fraction(1, 2)])
+    def test_fig_size_scale(self, scale):
+        """Test that the figure scale works on a figure."""
+        new_figsize = self.figsize.scale(scale)
+        assert new_figsize == tuple(v * scale for v in self.figsize)
+
+    @pytest.mark.parametrize("scale", ["foo", None])
+    def test_fig_size_scale__invalid(self, scale):
+        """Test that the figure scale works on a figure."""
+        with pytest.raises(TypeError, match="Scalar must be a"):
+            self.figsize.scale(scale)
 
 
 class TestFigureScale:
     """Test the FigureScale class."""
 
-    fig_scale = FigureScale(1.0, 1.0)
+    fig_scale = FigureScale(width=12.0, height=12.0)
 
-    def test_fig_size_iter(self):
-        """Test that the figure size is iterable."""
-        expected_size = (1.0, 1.0)
+    def test_iter(self):
         actual_size = tuple(self.fig_scale)
-        assert actual_size == expected_size
+        assert actual_size == (12.0, 12.0)
 
-    def test_fig_size_relative_hight(self):
-        """Test that the figure size is iterable."""
-        fig_scale = FigureScale(2.0, height_rel=0.5)
-        expected_size = (2.0, 1.0)
-        actual_size = tuple(fig_scale)
-        assert actual_size == expected_size
-
-    def test_fig_size_getitem(self):
-        """Test that the figure size is iterable."""
-        expected_size = (1.0, 1.0)
+    def test_getitem(self):
         actual_size = self.fig_scale[:]
-        assert actual_size == expected_size
+        assert actual_size == (12.0, 12.0)
 
-    def test_fig_size_replace(self):
-        """Test that the figure size is iterable."""
-        expected_size = (2.0, 1.0)
-        actual_size = tuple(self.fig_scale.replace(width=2.0))
-        assert actual_size == expected_size
-
-    def test_fig_size_len(self):
-        """Test that the figure size has a length."""
+    def test_len(self):
         assert len(self.fig_scale) == 2
 
-    def test_fig_size__invalid_units(self):
-        """Test value error is raised for an unknown unit."""
-        with pytest.raises(ValueError):
-            FigureScale(1.0, 1.0, units="invalid")
+    def test_relative_hight(self):
+        fig_scale = FigureScale(width=2.0, aspect=0.5)
+        assert fig_scale == (2.0, 1.0)
 
-    def test_fig_size__units_conversion(self):
-        """Test that the figure size is iterable."""
-        fig_scale = FigureScale(1.0, 1.0, units="ft")
-        expected_size = (12, 12)
-        actual_size = tuple(fig_scale)
+    def test_relative_width(self):
+        fig_scale = FigureScale(height=1.0, aspect=0.5)
+        assert fig_scale == (2.0, 1.0)
+
+    def test_no_attribute_provided(self):
+        with pytest.raises(ValueError, match="Exactly two out of"):
+            FigureScale()
+
+    @patch.object(FigureScale, "_validate_attributes", return_value=None)
+    def test_compute_figsize_fallback(self, mock_validate_attributes):
+        with pytest.raises(
+            ValueError, match="Either width or height must be provided."
+        ):
+            FigureScale(aspect=1.0)
+        mock_validate_attributes.assert_called_once()
+
+    @pytest.mark.parametrize("attribute", ["width", "height", "aspect"])
+    def test_one_attribute_provided(self, attribute):
+        kwargs = {attribute: 1.0}
+        with pytest.raises(ValueError, match="Exactly two out of"):
+            FigureScale(**kwargs)
+
+    def test_all_attributes_provided(self):
+        with pytest.raises(ValueError, match="Exactly two out of"):
+            FigureScale(width=1.0, height=1.0, aspect=1.0)
+
+    @pytest.mark.parametrize(
+        "attributes",
+        [
+            {"height": -1.0, "aspect": 1.0},
+            {"width": -1.0, "aspect": 1.0},
+            {"width": -1.0, "height": 1.0},
+            {"height": 1.0, "aspect": -1.0},
+            {"width": 1.0, "aspect": -1.0},
+            {"width": 1.0, "height": -1.0},
+        ],
+    )
+    def test_negative_attributes(self, attributes):
+        with pytest.raises(ValueError, match="The figure size must be positive"):
+            FigureScale(**attributes)
+
+    @pytest.mark.parametrize(
+        "attributes, expected_size",
+        [
+            ({"width": 10.0}, (10.0, 12.0)),
+            ({"height": 10.0}, (12.0, 10.0)),
+            ({"width": None, "aspect": 2.0}, (6.0, 12.0)),
+            ({"height": None, "aspect": 2.0}, (12.0, 24.0)),
+            ({"units": "ft", "width": 1.0}, (12.0, 12.0)),
+            ({"units": "ft", "height": 1.0}, (12.0, 12.0)),
+        ],
+    )
+    def test_replace(self, attributes, expected_size):
+        actual_size = self.fig_scale.replace(**attributes)
         assert actual_size == expected_size
 
-    def test_fig_size__on_figure(self):
-        """Test that the figure size is iterable."""
-        fig_scale = FigureScale(1.0, 1.0)
-        ax, _ = plt.subplots(figsize=fig_scale)
-        expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
-        assert actual_size == expected_size
+    def test_invalid_units(self):
+        with pytest.raises(KeyError):
+            FigureScale(width=1.0, height=1.0, units="invalid")
 
-    def test_fig_size__on_config(self):
-        """Test that the figure size is iterable."""
-        fig_scale = FigureScale(1.0, 1.0)
-        with plt.rc_context({"figure.figsize": fig_scale}):
-            ax, _ = plt.subplots()
-            expected_size = (1.0, 1.0)
-            actual_size = tuple(ax.get_size_inches())
-            assert actual_size == expected_size
+    @pytest.mark.parametrize("units", INITIAL_VALUES.keys())
+    def test_units_conversion(self, units):
+        fig_scale = FigureScale(width=1.0, height=1.0, units=units)
+        factor = INITIAL_VALUES[units]
+        expected_size = (1.0 * factor, 1.0 * factor)
+        assert fig_scale == expected_size
 
-    def test_fig_size__on_context(self):
-        """Test that the figure size is iterable."""
+    def test_used_on_figure(self):
+        fig, _ = plt.subplots(figsize=self.fig_scale)
+        with close_figure(fig):
+            actual_size = tuple(fig.get_size_inches())
+            assert actual_size == self.fig_scale
+
+    def test_used_on_config(self):
+        with plt.rc_context({"figure.figsize": self.fig_scale}):
+            fig, _ = plt.subplots()
+            with close_figure(fig):
+                actual_size = tuple(fig.get_size_inches())
+                assert actual_size == self.fig_scale
+
+    def test_used_on_context(self):
         with self.fig_scale():
-            ax, _ = plt.subplots()
-            expected_size = (1.0, 1.0)
-            actual_size = tuple(ax.get_size_inches())
-            assert actual_size == expected_size
+            fig, _ = plt.subplots()
+            with close_figure(fig):
+                actual_size = tuple(fig.get_size_inches())
+                assert actual_size == self.fig_scale
 
-    def test_fig_size__on_decorator(self):
-        """Test that the figure size is iterable."""
-
+    def test_used_on_decorator(self):
         @self.fig_scale()
-        def plot():
-            ax, _ = plt.subplots()
-            return ax
+        def dummy_plot_function():
+            fig, _ = plt.subplots()
+            return fig
 
-        ax = plot()
-        expected_size = (1.0, 1.0)
-        actual_size = tuple(ax.get_size_inches())
-        assert actual_size == expected_size
+        fig = dummy_plot_function()
+        with close_figure(fig):
+            actual_size = tuple(fig.get_size_inches())
+            assert actual_size == self.fig_scale
+
+    def test_set_as_default(self):
+        with plt.rc_context():
+            self.fig_scale.set_as_default()
+            assert tuple(plt.rcParams["figure.figsize"]) == self.fig_scale
