@@ -48,3 +48,11 @@ class UnitConversionMapping(TypedUserDict):
         if fraction <= 0:
             raise ValueError("All values must be positive non-zero numbers.")
         return super().__setitem__(key, fraction)
+
+    def __getitem__(self, key: str) -> Fraction:
+        try:
+            return super().__getitem__(key)
+        except KeyError:
+            raise KeyError(
+                f"Unknown unit on {self.__class__.__name__}: {key}. The available options are: {', '.join(self)}"
+            )
