@@ -10,7 +10,7 @@ from typing import NamedTuple
 
 from matplotlib.pyplot import rc_context
 
-from figure_scale.unit_conversion import CONVERSION_TABLE
+from figure_scale.unit_conversion import INITIAL_VALUES
 
 
 class FigSize(NamedTuple):
@@ -34,10 +34,10 @@ class FigureScale(Sequence):
 
     def __post_init__(self):
         """Validate the values."""
-        if self.units not in CONVERSION_TABLE:
+        if self.units not in INITIAL_VALUES:
             raise ValueError(
                 "Unknown unit: {}. The available options are: {}".format(
-                    self.units, ", ".join(CONVERSION_TABLE.keys())
+                    self.units, ", ".join(INITIAL_VALUES.keys())
                 )
             )
 
@@ -68,7 +68,7 @@ class FigureScale(Sequence):
             height_abs = self.height_abs
 
         try:
-            factor = CONVERSION_TABLE[self.units]
+            factor = INITIAL_VALUES[self.units]
         except KeyError as err:
             raise ValueError(f"Unknown unit: {self.units}. ") from err
 
