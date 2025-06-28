@@ -69,7 +69,7 @@ addopts = [
 source = ["src/figure_scale", "tests"]
 branch = true
 relative_files = true
-omit = ["src/figure_scale/_version.py"]
+omit = ["src/figure_scale/_version.py", "src/figure_scale/__init__.py"]
 
 [tool.coverage.report]
 fail_under = 90
