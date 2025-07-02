@@ -72,6 +72,20 @@ jobs:
           pattern: coverage-*
           merge-multiple: true
 
+      - name: Get project version
+        id: version
+        run: |
+          if [ "${{ github.ref_type }}" == "tag" ]; then
+            # If running from a tag, use the tag name
+            VERSION="${{ github.ref_name }}"
+          else
+            # Otherwise, get the latest release version from GitHub CLI
+            VERSION=$(gh release view --repo ${{ github.repository }} --json tagName --jq '.tagName // "unknown"' | tr -d '\n')
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@2500896589ef8f7247069a56136f8dc177c27ccf # v5.2.0
         env:
@@ -85,6 +99,7 @@ jobs:
             -Dsonar.sources=src/figure_scale
             -Dsonar.tests=tests
             -Dsonar.python.coverage.reportPaths=coverage.*.xml
+            -Dsonar.projectVersion=${{ steps.version.outputs.version }}
 
   build:
     needs: test
