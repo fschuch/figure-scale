@@ -16,14 +16,14 @@ if TYPE_CHECKING:
 else:
     TypedUserDict = UserDict
 
-INITIAL_VALUES: dict[str, float] = {
-    "in": 1,
-    "ft": 12,
-    "yd": 36,
-    "m": 0.0254**-1.0,
-    "cm": 2.54**-1.0,
-    "mm": 25.4**-1.0,
-    "pt": 72.0**-1.0,
+INITIAL_VALUES: dict[str, Fraction] = {
+    "in": Fraction(1),
+    "ft": Fraction(12),
+    "yd": Fraction(36),
+    "m": Fraction(10000, 254),
+    "cm": Fraction(100, 254),
+    "mm": Fraction(10, 254),
+    "pt": Fraction(1, 72),
 }
 
 
@@ -31,6 +31,9 @@ INITIAL_VALUES: dict[str, float] = {
 class UnitConversionMapping(TypedUserDict):
     """
     A singleton dictionary class to hold the conversion factors from other units to inches.
+
+    Examples:
+        See the :ref:`User Guide<Unit Conversion>` for examples of how to use this class.
     """
 
     def __init__(self):

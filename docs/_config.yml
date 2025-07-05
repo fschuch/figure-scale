@@ -1,14 +1,19 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: The Wizard Template for Python Projects
+title: Figure Scale
 author: Felipe N. Schuch
+copyright: "2023"
+description: Publication quality figures start here
 logo: logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  stderr_output: remove
+  allow_errors: false
+  timeout: 120
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -35,7 +40,9 @@ html:
 
 sphinx:
   extra_extensions:
+    - sphinx_github_changelog
     - sphinx.ext.autodoc
+    - sphinx.ext.autosectionlabel
     - sphinx.ext.intersphinx
     - sphinx.ext.napoleon
   config:
@@ -48,5 +55,16 @@ sphinx:
         - null
 
     napoleon_include_special_with_doc: true
-    napoleon_google_docstring: False
-    napoleon_numpy_docstring: True
+    napoleon_google_docstring: true
+    napoleon_numpy_docstring: false
+
+    html_theme_options:
+      icon_links:
+        - name: "Releases"
+          url: "https://github.com/fschuch/figure-scale/releases"
+          icon: "https://img.shields.io/github/v/release/fschuch/figure-scale?style=social"
+          type: "url"
+        - name: "Stars"
+          url: "https://github.com/fschuch/figure-scale/"
+          icon: "https://img.shields.io/github/stars/fschuch/figure-scale?style=social"
+          type: "url"
