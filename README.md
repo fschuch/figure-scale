@@ -28,38 +28,20 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-## Usage
+## About
 
-```python
-import matplotlib.pyplot as plt
-import figure_scale as fs
-figsize = fs.FigureScale(4.0, 2.0, units="in")
-```
+The `figure-scale` library is designed to help you create publication-quality figures with precise size control in Matplotlib.
+It provides a convenient way to specify figure dimensions in various units (inches, millimeters, centimeters, points, etc.) and ensures consistent sizing across different plotting contexts.
 
-```python
-plt.rcParams.update({'figure.figsize' : figsize})
-```
+**Key Features:**
 
-```python
-fig, ax = plt.subplots(figsize=figsize)
-```
+- **Multiple unit support**: Specify dimensions in inches, millimeters, centimeters, points, and more, it is extendable by custom user provided units for convenience
+- **Flexible sizing**: Define figures using width/height, or width/aspect, or height/aspect
+- **Easy integration**: Works seamlessly with matplotlib's existing figure creation methods
+- **Context management**: Use as context managers or decorators for localized figure sizing
+- **Lightweight**: Minimal dependencies, built on top of Matplotlib only
 
-```python
-with figsize():
-    fig, ax = plt.subplots()
-```
-
-```python
-@figsize()
-def my_plot():
-    ...
-```
-
-## Installation
-
-```bash
-pip install figure-scale
-```
+Check out the documentation for more details on how to use the library and its features: <https://docs.fschuch.com/figure-scale>.
 
 ## Copyright and License
 

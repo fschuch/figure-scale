@@ -69,6 +69,9 @@ class TestFigureScale:
     def test_len(self):
         assert len(self.fig_scale) == 2
 
+    def test_equality(self):
+        assert FigureScale(width=1, height=1) == FigureScale(width=1, height=1)
+
     def test_relative_hight(self):
         fig_scale = FigureScale(width=2.0, aspect=0.5)
         assert fig_scale == (2.0, 1.0)

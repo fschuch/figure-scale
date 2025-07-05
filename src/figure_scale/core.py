@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass, field, replace
 from fractions import Fraction
@@ -14,12 +14,24 @@ from figure_scale.unit_conversion import UnitConversionMapping
 
 
 class FigSize(NamedTuple):
-    """A named tuple to hold figure size information."""
+    """
+    A named tuple to hold figure size information to be used with matplotlib.
+    """
 
     width: float
     height: float
 
     def scale(self, scalar: int | float | Fraction) -> "FigSize":
+        """
+        Convenience method to scale the figure size by a scalar value.
+
+        Arguments:
+            scalar: The scalar value to scale the figure size by.
+        Returns:
+            A new `FigSize` instance with the scaled width and height.
+        Raises:
+            TypeError: If the scalar is not an integer, float, or Fraction.
+        """
         if not isinstance(scalar, (int, float, Fraction)):
             raise TypeError("Scalar must be a Fraction, a float, or an integer.")
         return FigSize(self.width * scalar, self.height * scalar)
@@ -27,7 +39,26 @@ class FigSize(NamedTuple):
 
 @dataclass(frozen=True, eq=False)
 class FigureScale(Sequence):
-    """Class to hold figure scale information."""
+    """
+    Class to hold figure scale information.
+
+    This class implements the Sequence interface, allowing it to be used as a tuple-like object.
+    It can be used to seamlessly set the `figure.figsize` parameter in matplotlib.
+
+    The initialization accepts its units, besides two of the following three parameters:
+
+    - width: The width of the figure in the specified units.
+    - height: The height of the figure in the specified units.
+    - aspect: The aspect ratio of the figure (width / height).
+
+    The missing parameter will be computed based on the provided ones.
+
+    It is set as a frozen dataclass to ensure constancy and immutability of the figure scale after creation.
+    See the :obj:`FigureScale.replace` method for a way to create a new instance with modified attributes.
+
+    Examples:
+        See the :ref:`User Guide<Figure Size>` for examples of how to use this class.
+    """
 
     units: str = "in"
     width: float | int | None = None
@@ -38,30 +69,36 @@ class FigureScale(Sequence):
     _conversion_table: UnitConversionMapping = field(init=False, repr=False, hash=False)
 
     def __post_init__(self):
-        """Set additional values."""
+        """Compute additional internal values."""
         object.__setattr__(self, "_conversion_table", UnitConversionMapping())
         figsize = self._compute_figsize()
         object.__setattr__(self, "_figsize", figsize)
 
     @contextmanager
-    def __call__(self, **kwargs):
-        """Replace the attributes of the figure scale."""
+    def __call__(self, **kwargs) -> Iterator[None]:
+        """
+        A context manager to set the figure size in matplotlib locally on your code.
+
+        This also enable it to be used as a decorator.
+        """
         with rc_context({"figure.figsize": self, **kwargs}):
             yield
 
     def __eq__(self, other: object) -> bool:
+        """Compare the figure scale with another object by delegating to the internal :obj:`FigSize`."""
+        if isinstance(other, FigureScale):
+            return self._figsize == other._figsize
         return self._figsize == other
 
     def __getitem__(self, index: slice | int):
-        """Get the figure size."""
+        """Get items for sequence-like access by delegating to the internal :obj:`FigSize`."""
         return self._figsize[index]
 
     def __len__(self) -> int:
-        """Return the length of the figure size."""
+        """Get the length for sequence-like access by delegating to the internal :obj:`FigSize`."""
         return len(self._figsize)
 
     def _compute_figsize(self) -> FigSize:
-        """Compute the figure size."""
         self._validate_attributes()
         factor = self._conversion_table[self.units]
 
@@ -74,12 +111,10 @@ class FigureScale(Sequence):
         return FigSize(float(width_abs * factor), float(height_abs * factor))
 
     def _resize(self, new_units: str) -> FigSize:
-        """Resize the figure size."""
         scale_factor = self._conversion_table["in"] / self._conversion_table[new_units]
         return self._figsize.scale(scale_factor)
 
     def _validate_attributes(self):
-        """Validate the attributes."""
         attributes = (self.width, self.height, self.aspect)
         if sum(1 for v in attributes if v is not None) != 2:
             raise ValueError(
@@ -102,5 +137,5 @@ class FigureScale(Sequence):
         return cast(FigureScale, replace(self, **kwargs))
 
     def set_as_default(self):
-        """Set the figure scale as the default."""
+        """Set the figure scale as the default on matplotlib."""
         rcParams["figure.figsize"] = self
