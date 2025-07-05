@@ -10,3 +10,5 @@ It provides a convenient way to specify figure dimensions in various units (inch
 - **Easy integration**: Works seamlessly with matplotlib's existing figure creation methods
 - **Context management**: Use as context managers or decorators for localized figure sizing
 - **Lightweight**: Minimal dependencies, built on top of Matplotlib only
+
+See also the blog post that inspired this package: [Publication-Quality Plots in Python with Matplotlib](https://www.fschuch.com/en/blog/2025/07/05/publication-quality-plots-in-python-with-matplotlib/). It also covers Localization, Style, Dimensions, and File Format of figures in Matplotlib.

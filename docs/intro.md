@@ -5,81 +5,60 @@
 
 ::::{grid} 1 1 2 2
 :class-container: text-center
-:gutter: 3
+:gutter: 2
 
 :::{grid-item-card}
 :link: getting-started/about
 :link-type: doc
 :class-header: bg-light
 
-Project Management 🧙🏻‍♂️
+Precise Figure Sizing 📐
 ^^^
 
-This is a general-purpose template that aims to provide a magical start to any Python project.
+Create publication-quality figures with exact dimensions in inches, millimeters, centimeters, points, and more.
 
 :::
 
 :::{grid-item-card}
-:link: user-guide/tooling/index
+:link: user-guide/figure-size
 :link-type: doc
 :class-header: bg-light
 
-Quality Assurance ✅
+Easy Integration with Matplotlib 📊
 ^^^
 
-Use pre-commit hooks, linters, formatters, and unit tests to ensure your code is up to standard.
+Seamlessly integrates with Matplotlib's existing figure creation methods with minimal code changes.
 
 :::
 
 :::{grid-item-card}
-:link: user-guide/documentation
+:link: user-guide/unit-conversion
 :link-type: doc
 :class-header: bg-light
 
-Documentation 📚
+Multi-Unit Support 📏
 ^^^
 
-Write documentation with Jupyter Book, including API references, interactive tutorials, and more.
+Work with any measurement unit and easily add custom units for specialized requirements.
 
 :::
 
 :::{grid-item-card}
-:link: user-guide/versioning-changelog
+:link: getting-started/installation
 :link-type: doc
 :class-header: bg-light
 
-Versioning/Changelog 📜
+Lightweight ⚡
 ^^^
 
-Commitless versioning and changelog management with git tags, pull request labels and GitHub releases.
-:::
+Minimal dependencies - built only on top of Matplotlib.
 
-:::{grid-item-card}
-:link: user-guide/ci-cd
-:link-type: doc
-:class-header: bg-light
-
-Automated CI/CD 🚀
-^^^
-
-Test, build, and publish your package to PyPi. Publish documentation to GitHub Pages.
-:::
-
-:::{grid-item-card}
-:link: references/further-reading
-:link-type: doc
-:class-header: bg-light
-
-Further Reading 📖
-^^^
-
-Resources and references to help you get the most out of this template.
 :::
 
 ::::
 
 This documentation is organized into a few major sections:
 
-- **Getting Started** provides an overview of the project and how to set it up.
-- **User Guide** contains details on how to use the template and the tools it provides.
-- **Reference** section includes further reading, besides [API references](references/api-reference.rst) and [How to Contribute](references/how-to-contribute.md) guides that are ready to be used by any project built with this template.
+- **Getting Started** provides an overview of the project and how to install it.
+- **User Guide** contains detailed tutorials on figure sizing and unit conversion.
+- **Reference** section includes the [API references](references/api-reference.rst) and [How to Contribute](references/how-to-contribute.md) guides.
