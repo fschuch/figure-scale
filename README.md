@@ -43,6 +43,8 @@ It provides a convenient way to specify figure dimensions in various units (inch
 
 Check out the documentation for more details on how to use the library and its features: <https://docs.fschuch.com/figure-scale>.
 
+See also the blog post that inspired this package: [Publication-Quality Plots in Python with Matplotlib](https://www.fschuch.com/en/blog/2025/07/05/publication-quality-plots-in-python-with-matplotlib/). It also covers Localization, Style, Dimensions, and File Format of figures in Matplotlib.
+
 ## Copyright and License
 
 © 2023 [Felipe N. Schuch](https://github.com/fschuch).
