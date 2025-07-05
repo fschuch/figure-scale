@@ -75,9 +75,7 @@ class FigureScale(Sequence):
 
     def _resize(self, new_units: str) -> FigSize:
         """Resize the figure size."""
-        scale_factor = (
-            self._conversion_table[self.units] / self._conversion_table[new_units]
-        )
+        scale_factor = self._conversion_table["in"] / self._conversion_table[new_units]
         return self._figsize.scale(scale_factor)
 
     def _validate_attributes(self):

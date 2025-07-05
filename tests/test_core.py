@@ -2,6 +2,8 @@
 
 from contextlib import contextmanager
 from fractions import Fraction
+from itertools import product
+from math import isclose
 from unittest.mock import patch
 
 import matplotlib.pyplot as plt
@@ -125,7 +127,16 @@ class TestFigureScale:
     )
     def test_replace(self, attributes, expected_size):
         actual_size = self.fig_scale.replace(**attributes)
-        assert actual_size == expected_size
+        assert all(isclose(a, b) for a, b in zip(actual_size, expected_size))
+
+    @pytest.mark.parametrize(
+        "base_units, new_units",
+        list(product(INITIAL_VALUES.keys(), INITIAL_VALUES.keys())),
+    )
+    def test_replace_with_units(self, base_units, new_units):
+        fig_scale = FigureScale(width=1.0, height=1.0, units=base_units)
+        new_fig_scale = fig_scale.replace(units=new_units)
+        assert all(isclose(a, b) for a, b in zip(fig_scale, new_fig_scale))
 
     def test_invalid_units(self):
         with pytest.raises(KeyError):
