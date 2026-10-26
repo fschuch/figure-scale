@@ -21,7 +21,7 @@ class FigSize(NamedTuple):
     width: float
     height: float
 
-    def scale(self, scalar: int | float | Fraction) -> "FigSize":
+    def scale(self, scalar: float | Fraction) -> FigSize:
         """
         Convenience method to scale the figure size by a scalar value.
 
